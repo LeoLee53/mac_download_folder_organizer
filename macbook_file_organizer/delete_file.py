@@ -22,15 +22,12 @@ def remove_items_older_than(days: int) -> None:
     for path in file_paths_to_remove:
         send2trash.send2trash(path)
 
-    remove_empty_category_dirs(days)
+    remove_empty_category_dirs()
 
 
 def remove_empty_category_dirs() -> None:
     """
     Removes any empty directories present in the "DOWNLOAD_FOLDER_PATH" which are older than the provided days.
-
-    Args:
-        days (int): Empty directories older than these many days will be removed.
     """
     category_dirs = [os.path.join(DIR_TO_WATCH, dir_name)
                      for dir_name in os.listdir(DIR_TO_WATCH)
@@ -52,8 +49,7 @@ def is_empty_category_dir(folder_path: str) -> bool:
         bool: True if the directory is empty, False otherwise.
     """
     for root_path, dirs, file_names in os.walk(folder_path):
-        visible_file_names = [
-            file_name for file_name in file_names if not file_name.startswith('.')]
+        visible_file_names = [file_name for file_name in file_names if not file_name.startswith('.')]
         if len(visible_file_names) != 0:
             return False
 
