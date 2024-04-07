@@ -25,7 +25,7 @@ def remove_items_older_than(days: int) -> None:
     remove_empty_category_dirs(days)
 
 
-def remove_empty_category_dirs(days: int) -> None:
+def remove_empty_category_dirs() -> None:
     """
     Removes any empty directories present in the "DOWNLOAD_FOLDER_PATH" which are older than the provided days.
 
@@ -34,8 +34,7 @@ def remove_empty_category_dirs(days: int) -> None:
     """
     category_dirs = [os.path.join(DIR_TO_WATCH, dir_name)
                      for dir_name in os.listdir(DIR_TO_WATCH)
-                     if _is_category_folder(os.path.join(DIR_TO_WATCH, dir_name)) and
-                     _is_older_than(os.path.join(DIR_TO_WATCH, dir_name), days)]
+                     if _is_category_folder(os.path.join(DIR_TO_WATCH, dir_name))]
 
     for dir in category_dirs:
         if is_empty_category_dir(dir):
