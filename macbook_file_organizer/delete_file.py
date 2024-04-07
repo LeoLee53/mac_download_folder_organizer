@@ -22,10 +22,10 @@ def remove_items_older_than(days: int) -> None:
     for path in file_paths_to_remove:
         send2trash.send2trash(path)
 
-    remove_empty_category_dirs_older_than(days)
+    remove_empty_category_dirs(days)
 
 
-def remove_empty_category_dirs_older_than(days: int) -> None:
+def remove_empty_category_dirs(days: int) -> None:
     """
     Removes any empty directories present in the "DOWNLOAD_FOLDER_PATH" which are older than the provided days.
 
@@ -72,6 +72,7 @@ def get_all_file_paths_in_category_folder(path: str) -> List[str]:
         list: A list containing paths of all files in the given directory.
     """
     paths = []
+
     category_folder_paths = [os.path.join(path, dir)
                              for dir in os.listdir(path)
                              if _is_category_folder(os.path.join(path, dir))]
