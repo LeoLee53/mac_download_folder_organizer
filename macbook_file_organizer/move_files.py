@@ -3,7 +3,7 @@ import os
 import shutil
 import time
 
-DOWNLOAD_FOLDER_PATH = '/Users/leolee/Desktop/Downloads'
+DOWNLOAD_FOLDER_PATH = '/Users/leolee/Downloads'
 
 
 def move_file(file_path: str) -> None:
@@ -21,6 +21,7 @@ def move_file(file_path: str) -> None:
     _is_downloaded(file_path)
 
     os.makedirs(dst_path, exist_ok=True)
+
     shutil.move(file_path, dst_path)
 
 
@@ -53,10 +54,10 @@ def _get_destination_path(file_path):
     Returns:
         str: The destination path for the file.
     """
-    year = _get_dir_cyear(file_path)
-    category_folder = _get_file_category_folder(file_path)
+    c_year = _get_dir_cyear(file_path)
+    destination_category_folder = _get_file_category_folder(file_path)
 
-    return DOWNLOAD_FOLDER_PATH + '/*' + year + '*/' + category_folder
+    return DOWNLOAD_FOLDER_PATH + '/*' + c_year + '*/' + destination_category_folder
 
 
 def _get_file_category_folder(file_path):
