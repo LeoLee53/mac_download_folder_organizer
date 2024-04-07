@@ -22,7 +22,13 @@ def move_file(file_path: str) -> None:
 
     os.makedirs(dst_path, exist_ok=True)
 
-    shutil.move(file_path, dst_path)
+    try:
+        shutil.move(file_path, dst_path)
+    except OSError as e:
+        basename = os.path.basename(file_path).split('.')[0]
+        new_path = file_path.replace(basename, f'{basename}(1)')
+        os.rename(file_path, new_path)
+        shutil.move(new_path, dst_path)
 
 
 def _is_downloaded(file_path):
