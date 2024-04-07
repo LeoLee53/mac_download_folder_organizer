@@ -3,7 +3,9 @@ import os
 import shutil
 import time
 
-DOWNLOAD_FOLDER_PATH = '/Users/leolee/Downloads'
+from Settings import DIR_TO_WATCH
+
+DOWNLOAD_FOLDER_PATH = DIR_TO_WATCH
 
 
 def move_file(file_path: str) -> None:
