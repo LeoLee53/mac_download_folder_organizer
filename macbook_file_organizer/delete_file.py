@@ -16,13 +16,14 @@ def remove_items_older_than(days: int) -> None:
     Args:
         days (int): Files and folders older than these many days will be removed.
     """
-    file_paths_to_remove = [path for path in get_all_file_paths_in_category_folder(DIR_TO_WATCH)
+    file_paths_to_remove = [path
+                            for path in get_all_file_paths_in_category_folder(DIR_TO_WATCH)
                             if _is_older_than(path, days)]
 
     for path in file_paths_to_remove:
         send2trash.send2trash(path)
 
-    remove_empty_category_dirs()
+    remove_empty_dirs()
 
 
 def remove_empty_dirs() -> None:
