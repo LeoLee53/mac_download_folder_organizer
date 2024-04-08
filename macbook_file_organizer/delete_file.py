@@ -25,20 +25,16 @@ def remove_items_older_than(days: int) -> None:
     remove_empty_category_dirs()
 
 
-def remove_empty_category_dirs() -> None:
+def remove_empty_dirs() -> None:
     """
     Removes any empty directories present in the "DOWNLOAD_FOLDER_PATH" which are older than the provided days.
     """
-    category_dirs = [os.path.join(DIR_TO_WATCH, dir_name)
-                     for dir_name in os.listdir(DIR_TO_WATCH)
-                     if _is_category_folder(os.path.join(DIR_TO_WATCH, dir_name))]
-
-    for dir in category_dirs:
-        if is_empty_category_dir(dir):
-            send2trash.send2trash(dir)
+    for dir_path, dir_names, file_names in os.walk(DIR_TO_WATCH, topdown=False):
+        if is_empty_dir(dir_path):
+            send2trash.send2trash(dir_path)
 
 
-def is_empty_category_dir(folder_path: str) -> bool:
+def is_empty_dir(folder_path: str) -> bool:
     """
     Checks if a given directory is empty or not.
 
@@ -48,12 +44,11 @@ def is_empty_category_dir(folder_path: str) -> bool:
     Returns:
         bool: True if the directory is empty, False otherwise.
     """
-    for root_path, dirs, file_names in os.walk(folder_path):
-        visible_file_names = [file_name for file_name in file_names if not file_name.startswith('.')]
-        if len(visible_file_names) != 0:
-            return False
+    visible_files = [path
+                     for path in os.listdir(folder_path)
+                     if not os.path.basename(path).startswith('.')]
 
-    return True
+    return len(visible_files) == 0
 
 
 def get_all_file_paths_in_category_folder(path: str) -> List[str]:
@@ -73,10 +68,16 @@ def get_all_file_paths_in_category_folder(path: str) -> List[str]:
                              if _is_category_folder(os.path.join(path, dir))]
 
     for path in category_folder_paths:
-        for root_path, category_folder_paths, file_names in os.walk(path):
-            for file_name in file_names:
-                if not file_name.startswith('.'):
-                    paths.append(os.path.join(root_path, file_name))
+        for root, subdirs, files in os.walk(path):
+            subdirs_copy = subdirs[:]
+            for subdir in subdirs_copy:
+                if subdir.endswith('.app'):
+                    paths.append(os.path.join(root, subdir))
+                    subdirs.remove(subdir)
+
+            for file in files:
+                if not file.startswith('.'):
+                    paths.append(os.path.join(root, file))
 
     return paths
 
