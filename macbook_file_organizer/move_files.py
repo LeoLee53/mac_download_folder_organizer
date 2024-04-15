@@ -20,8 +20,6 @@ def move_file(file_path: str) -> None:
     """
     dst_path = _get_destination_path(file_path)
 
-    _is_downloaded(file_path)
-
     os.makedirs(dst_path, exist_ok=True)
 
     try:
