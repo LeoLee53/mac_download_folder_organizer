@@ -47,7 +47,11 @@ def _is_downloaded(file_path):
         new_file_size = os.stat(file_path).st_size
 
         if old_file_size == new_file_size:
-            break
+            # Check if the file has a .crdownload extension
+            if file_path.endswith('.crdownload'):
+                continue
+            else:
+                break
 
 
 def _get_destination_path(file_path):
